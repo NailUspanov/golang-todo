@@ -10,6 +10,12 @@ type TodoListPostgres struct {
 	db *sqlx.DB
 }
 
+func (t *TodoListPostgres) Delete(listId int) error {
+	deleteQuery := fmt.Sprintf("DELETE FROM %s WHERE id = $1", todoListsTable)
+	_, err := t.db.Exec(deleteQuery, listId)
+	return err
+}
+
 func (t *TodoListPostgres) GetById(id int) (awesomeProject.TodoList, error) {
 	var list awesomeProject.TodoList
 	getByIdQuery := fmt.Sprintf("SELECT tl.* FROM %s tl WHERE tl.id = $1", todoListsTable)
